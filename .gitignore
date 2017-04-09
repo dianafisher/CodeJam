@@ -1,0 +1,8 @@
+# Mac files
+.DS_Store
+
+# zip files
+.zip
+
+# test output files
+.txt

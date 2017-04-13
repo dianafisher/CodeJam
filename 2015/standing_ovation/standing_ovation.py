@@ -13,10 +13,10 @@
 
 # read input file
 input_file_name = 'A-large-practice.in'
-output_file_name = 'standing_ovation_output.txt'
+output_file_name = 'A-large-practice.out'
 
 f = open(input_file_name, 'r')
-outFile = open(output_file_name, 'w', 0)
+outFile = open(output_file_name, 'w')
 
 # get T, the number of test cases
 T = f.readline()
@@ -24,26 +24,15 @@ T = int(T)
 
 # read T lines
 for x in range(T):
-    line = f.readline()    
-    Smax, kstr = line.split()    
-    
+    line = f.readline()
+    Smax, kstr = line.split()
+
     y = 0  # y is the number of friends to invite
     standing = 0
-    for k in range(int(Smax) + 1):        
+    for k in range(int(Smax) + 1):
         y = max(y, k - standing)
-        n = int(kstr[k])        
-        standing += n   
-    case = x+1 
-    print 'Case #%d:' % case, y
+        n = int(kstr[k])
+        standing += n
+    case = x+1
+    print ('Case #%d:' % case, y)
     outFile.write('Case #' + str(case) + ': ' + str(y) + "\n")
-
-# for x in range(T):
-#     line = f.readline() 
-#     smax, string = line.split()
-#     t = 0
-#     min_invite = 0
-#     for k in range(int(smax) + 1):
-#         min_invite = max(min_invite, k - t)
-#         t += int(string[k])
-#     print "Case #%d: %d" % (x + 1, min_invite)
-#     outFile.write('Case #' + str(x+1) + ': ' + str(min_invite) + "\n")

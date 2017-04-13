@@ -4,5 +4,5 @@
 # zip files
 .zip
 
-# test output files
-.txt
+# output files
+.out

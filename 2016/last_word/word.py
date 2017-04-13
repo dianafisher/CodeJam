@@ -13,23 +13,23 @@ Large dataset:
 
 """
 
-input_file_name = 'A-large.in'
-output_file_name = 'A-large_word.out'
+input_file_name = 'A-large-practice.in'
+output_file_name = 'A-large-practice.out'
 
 f = open(input_file_name, 'r')
-outFile = open(output_file_name, 'w', 0)
+outFile = open(output_file_name, 'w')
 
 # get T, the number of test cases
 T = f.readline()
 T = int(T)
 
 for t in range(T):
-    S = f.readline().strip()    
-    count = len(S)    
+    S = f.readline().strip()
+    count = len(S)
     # print S
     letters = list(S)
 
-    high = letters[0]    
+    high = letters[0]
     output = ''
     for ch in letters:
         if (ch >= high):
@@ -38,13 +38,5 @@ for t in range(T):
         else:
             output += ch
 
-    print 'Case #%d:' % (t+1), output
-    outFile.write('Case #' + str(t+1) + ": " + output + "\n")     
-    
-
-
-        
-
-    
-
-    
+    print ('Case #%d:' % (t+1), output)
+    outFile.write('Case #' + str(t+1) + ": " + output + "\n")

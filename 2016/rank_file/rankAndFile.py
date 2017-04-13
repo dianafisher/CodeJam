@@ -66,23 +66,23 @@ input_file_name = 'B-large-practice.in'
 output_file_name = 'B-large-practice.out'
 
 f = open(input_file_name, 'r')
-outFile = open(output_file_name, 'w', 0)
+outFile = open(output_file_name, 'w')
 
 # get T, the number of test cases
 T = f.readline()
 T = int(T)
-print 'T = {}'.format(T)
+print ('T = {}'.format(T))
 
 for t in range(T):
     N = f.readline()
     N = int(N)
-    print 'N = {}'.format(N)
+    print ('N = {}'.format(N))
     numLines = 2*N-1
     frequencies = {}
     for x in range(numLines):
         line = f.readline()
         arr = [int(s) for s in line.split()]
-        print arr
+        print (arr)
         for y in range(N):
             value = arr[y]
             if value in frequencies:
@@ -90,7 +90,7 @@ for t in range(T):
             else:
                 frequencies[value] = 1
 
-    print frequencies
+    print (frequencies)
 
     # find the entries which have odd frequency count
     result = []
@@ -104,8 +104,5 @@ for t in range(T):
     text =  (' '.join(str(x) for x in result))
     # print text
     output = 'Case #{}: {}'.format((t+1), text)
-    print output
+    print (output)
     outFile.write(output + "\n")
-
-
-

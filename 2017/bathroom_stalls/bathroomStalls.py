@@ -62,131 +62,55 @@ Case #4: 0 0
 Case #5: 500 499
 
 """
+from math import floor
+from collections import deque, defaultdict
+import heapq
 
-# input_file_name = 'C-small-1-attempt0.in'
-# output_file_name = 'C-small-reduced.out'
+input_file_name = 'C-large-practice.in'
+output_file_name = 'C-large-practice.out'
 
-input_file_name = 'C-small-test.in'
-output_file_name = 'C-small-test.out'
+# input_file_name = 'C-small-test.in'
+# output_file_name = 'C-small-test.out'
 
 
 f = open(input_file_name, 'r')
-outFile = open(output_file_name, 'w', 0)
+outFile = open(output_file_name, 'w')
 
 # get T, the number of test cases
 T = f.readline()
 T = int(T)
 for t in range(T):
-    print '---------------------'
+    print ('---------------------')
     line = f.readline()
     N, K = line.split()
     K = int(K)
     N = int(N)
-    print 'N: {}, K: {}'.format(N, K)
-    if N < 5000:
-        stalls = []
-        stalls.append('O')
-        for n in range(N):
-            stalls.append('.')
-        stalls.append('O')
-        if N < 100:
-            print 'stalls: {}'.format(stalls)
+    print('N: {}, K: {}'.format(N, K))
 
-        for k in range(K):
-            # print 'k = {}'.format(k)
-            mins = []
-            maxes = []
-            maxMax = -1
-            maxMin = -1
-            # check all empty stalls
-            for s in range(1, N+1):
-                # calculate LS and RS for each empty stall
-                if stalls[s] != 'O':
-                    LS = 0
-                    l = s-1
-                    while l > 0 and stalls[l] != 'O':
-                        LS+=1
-                        l-=1
-                    # print 'LS for S={} is {}'.format(s, LS)
-                    RS = 0
-                    r = s+1
-                    while s < N:
-                        if stalls[r] != 'O':
-                            RS+=1
-                            r+=1
-                        else:
-                            break
-                    # print 'RS for S={} is {}'.format(s, RS)
-                    minimum = min(LS, RS)
-                    if minimum > maxMin:
-                        maxMin = minimum
+    gap_counts = {N:1}
+    queue = [-N]
 
-                    maximum = max(LS, RS)
-                    if maximum > maxMax:
-                        maxMax = maximum
-
-                    result = (minimum, maximum, s)
-                    mins.append(result)
-
-            # print 'mins: {}'.format(mins)
-
-            # group the maximal mins together
-            maximalMins = []
-            for m in mins:
-                if m[0] == maxMin:
-                    maximalMins.append(m)
-
-            # print 'maximalMins: {}'.format(maximalMins)
-
-            if len(maximalMins) == 0:
-                # k chooses this stall
-                m = maximalMins[0]
-                selected = m[2]
-                # print 'selected stall: {}'.format(selected)
-                y = m[1]
-                z = m[0]
-                print 'k = {}, y = {}, z = {}'.format(k, y, z)
-                stalls[selected] = 'O'
-
-            # if there is more than one maximal min, find the maximal max of the maximalMins
-            else:
-                maxOfMins = -1
-                for m in maximalMins:
-                    if m[1] > maxOfMins:
-                        maxOfMins = m[1]
-
-                maximalMaxes = []
-                for m in maximalMins:
-                    if m[1] == maxOfMins:
-                        maximalMaxes.append(m)
-
-                # print 'maximalMaxes: {}'.format(maximalMaxes)
-                if len(maximalMaxes) == 0:
-                    # k chooses this stall
-                    m = maximalMaxes[0]
-                    selected = m[2]
-                    # print 'selected stall: {}'.format(selected)
-                    y = m[1]
-                    z = m[0]
-                    print 'k = {}, y = {}, z = {}'.format(k, y, z)
-                    stalls[selected] = 'O'
-                else:
-                    # k chooses the left-most stall
-                    leftMost = N+2
-                    for m in maximalMaxes:
-                        if m[2] < leftMost:
-                            leftMost = m[2]
-
-                    selected = leftMost
-                    # print 'selected stall: {}'.format(selected)
-                    y = m[1]
-                    z = m[0]
-                    print 'k = {}, y = {}, z = {}'.format(k, y, z)
-
-                    stalls[selected] = 'O'
-            if N < 100:
-                print 'stalls: {}'.format(stalls)
-            if k == (K-1):
-                output = 'Case #{}: {} {}'.format((t+1), y, z)
-                print output
-                outFile.write(output + "\n")
+    while True:
+        print('gap_counts', gap_counts)
+        print('queue', queue)
+        # pop off the biggest gap
+        gapSize = -heapq.heappop(queue)
+        print('gapSize', gapSize)
+        gapCount = gap_counts[gapSize]
+        print('gapCount', gapCount)
+        del gap_counts[gapSize]
+        if K <= gapCount:
+            output = 'Case #{}: {} {}'.format(t+1, gapSize // 2, (gapSize-1) // 2)
+            print(output)
+            outFile.write(output + "\n")
+            break
+        else:
+            K -= gapCount
+            left = (gapSize-1) // 2
+            right = gapSize // 2
+            print('left: {}, right: {}'.format(left, right))
+            for g in [left, right]:
+                if g not in gap_counts:
+                    gap_counts[g] = 0
+                    heapq.heappush(queue, -g)
+                gap_counts[g] += gapCount
